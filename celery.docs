@@ -1,0 +1,34 @@
+What is Celery?
+
+Celery is a task queue for executing work outside a Python web application HTTP request-response cycle
+
+A task queue's input is a unit of work called a task. Dedicated worker processes contantly monitor task queues for new work to perform.
+
+task schedule / periodic task >> Is celery beat.
+ 
+ Worker --> Pool --> Concurrency
+ When you start a celery worker, you specify the pool, concurency, autoscale etc. in the command.
+
+ pool - decides who will actually perform the task - thread, child process, worker itself or else.
+
+ concurency - concurency will decide the size of the pool.
+
+ autoscale - to dynamically resize the pool based on load. The autoscaler adds more
+ pool processes when there is work to do, and starts removing processes when the workload is low.
+
+ $ celery -A <project_name>.celery worker --pool=perfork --concurrency=5 --autoscale=10,3 -l info
+                                                                                     10>> max
+                                                                                     3>> min child processes
+
+
+celery supports following execution pool implementations:
+1.  **solo**: 1 worker process, 1 thread.
+2.  **prefork**: 1 worker process, multiple threads. This is the default when
+3. threads(multithreading)
+4. eventlet
+5. gevent
+
+
+command:-> celery -A django_celery_project.celery worker -l info --pool=solo       
+
+for celery beats:- celery -A django_celery_project beat -l info
